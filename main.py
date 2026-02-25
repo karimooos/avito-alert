@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 from bs4 import BeautifulSoup
 
@@ -31,5 +32,12 @@ for ad in ads:
         text_block = parent.get_text(" ", strip=True)
 
         # نتحقق واش فيه minutes
-        if "minute" in text_block.lower():
-            send_telegram(f"🚗 Nouvelle annonce:\n{title}\n{full_link}")
+        
+
+text_lower = text_block.lower()
+match = re.search(r"(\d+)\s*minute", text_lower)
+
+if match:
+    minutes = int(match.group(1))
+    if minutes <= 12:
+        send_telegram(f"🚗 Nouvelle annonce:\n{title}\n{full_link}")
