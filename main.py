@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 TOKEN = os.environ.get("BOT_TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
-SEARCH_URL = os.environ.get("SEARCH_URL")
+SEARCH_URLS = os.environ.get("SEARCH_URL").splitlines()
 
 DATA_FILE = "seen_links.txt"
 
