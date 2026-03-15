@@ -24,24 +24,28 @@ else:
     seen_links = set()
 
 headers = {"User-Agent": "Mozilla/5.0"}
-response = requests.get(SEARCH_URL, headers=headers)
-soup = BeautifulSoup(response.text, "html.parser")
-
-ads = soup.find_all("a", href=True)
 
 current_links = set()
 
-for ad in ads:
-    link = ad["href"]
+# Loop through all search URLs
+for SEARCH_URL in SEARCH_URLS:
 
-    if "/voitures_d_occasion/" in link:
-        full_link = "https://www.avito.ma" + link
-        current_links.add(full_link)
+    response = requests.get(SEARCH_URL, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
 
-        title = ad.get_text(strip=True)
+    ads = soup.find_all("a", href=True)
 
-        if full_link not in seen_links:
-            send_telegram(f"🚗 Nouvelle annonce:\n{title}\n{full_link}")
+    for ad in ads:
+        link = ad["href"]
+
+        if "/voitures_d_occasion/" in link:
+            full_link = "https://www.avito.ma" + link
+            current_links.add(full_link)
+
+            title = ad.get_text(strip=True)
+
+            if full_link not in seen_links:
+                send_telegram(f"🚗 Nouvelle annonce:\n{title}\n{full_link}")
 
 # Keep only last 500 links
 updated_links = list(seen_links.union(current_links))[-500:]
