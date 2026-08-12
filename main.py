@@ -15,6 +15,7 @@ def send_telegram(message):
         "text": message
     }
     requests.post(url, data=data)
+    send_telegram("🧪 TEST - Telegram bot is working")
 
 # Load seen links
 if os.path.exists(DATA_FILE):
