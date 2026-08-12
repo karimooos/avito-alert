@@ -27,7 +27,7 @@ headers = {"User-Agent": "Mozilla/5.0"}
 
 current_links = set()
 
-# Loop through all search URLs
+# Check all Avito search URLs
 for SEARCH_URL in SEARCH_URLS:
 
     response = requests.get(SEARCH_URL, headers=headers)
@@ -45,9 +45,11 @@ for SEARCH_URL in SEARCH_URLS:
             title = ad.get_text(strip=True)
 
             if full_link not in seen_links:
-                send_telegram(f"🚗 Nouvelle annonce:\n{title}\n{full_link}")
+                send_telegram(
+                    f"🚗 Nouvelle annonce:\n{title}\n{full_link}"
+                )
 
-# Keep only last 500 links
+# Keep only the last 500 links
 updated_links = list(seen_links.union(current_links))[-500:]
 
 with open(DATA_FILE, "w") as f:
